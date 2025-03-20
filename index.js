@@ -37,28 +37,7 @@ const errorHandler = (error, request, response, next) => {
 // app.use(requestLogger)
 
 
-data = [
-    { 
-      "id": "1",
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": "2",
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": "3",
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": "4",
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
+
 
 app.get('/api/persons',(request,response) => {
     Phone.find({}).then(result => {
@@ -66,11 +45,6 @@ app.get('/api/persons',(request,response) => {
     })
 })
 
-app.get('/info',(request,response) => {
-    const length = data.length
-    const dateTime = new Date().toISOString()
-    response.send(`<p>The phone book has ${length} many people <br/><br/> ${dateTime}</p>`)
-})
 
 app.get('/api/persons/:id',(request,response,next) => {
     const id = request.params.id

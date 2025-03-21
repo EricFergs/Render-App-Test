@@ -1,19 +1,4 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
-
-mongoose.set('strictQuery',false)
-
-const url = process.env.MONGODB_URI
-
-console.log('Connecting to URL')
-mongoose.connect(url)
-  .then(result => {
-    console.log('conncting to MongoDB')
-  })
-  .catch(error => {
-    console.log('Error connecting to my beloved url', error.message)
-  })
-
 
 const phoneSchema = new mongoose.Schema({
   id: Number,

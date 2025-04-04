@@ -1,10 +1,9 @@
 const phonesRouter = require('express').Router()
 const Phone = require('../models/phone')
 
-phonesRouter.get('/',(request,response) => {
-  Phone.find({}).then(result => {
-    response.json(result)
-  })
+phonesRouter.get('/',async (request,response) => {
+  const phones = await Phone.find({})
+  response.json(phones)
 })
 
 
@@ -20,13 +19,10 @@ phonesRouter.get('/:id',(request,response,next) => {
   }).catch(error => next(error))
 })
 
-phonesRouter.delete('/:id',(request,response,next) => {
+phonesRouter.delete('/:id',async (request,response,next) => {
   const id = request.params.id
-  Phone.findByIdAndDelete(id)
-    .then(result => {
-      response.status(204).end()
-    })
-    .catch(error => next(error))
+  await Phone.findByIdAndDelete(id)
+  response.status(204).end()
 })
 
 phonesRouter.put('/',(request,response, next) => {
@@ -52,23 +48,20 @@ phonesRouter.put('/',(request,response, next) => {
     .catch(error => next(error))
 })
 
-phonesRouter.post('/',(request,response,next) => {
+phonesRouter.post('/', async (request,response,next) => {
   const body = request.body
-
-  Phone.findOne({ name: body.name }).then(exists => {
-    if (exists){
-      return response.status(409).json({ error : 'Already exists' })
-    }
-    const phone = new Phone({
-      'name' : body.name,
-      'number': body.number
-    })
-    phone.save().then(savedPhone => {
-      return response.json(savedPhone)
-    })
-      .catch(error => next(error))
+  const exists = await Phone.findOne({name:body.name})
+  if (exists){
+    return response.status(409).json({ error : 'Already exists' })
+  }
+  const phone = new Phone({
+    'name' : body.name,
+    'number': body.number
   })
-
+  const savedPhone = await phone.save()
+  return response.status(201).json(savedPhone)
 })
+
+
 
 module.exports = phonesRouter

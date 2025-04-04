@@ -30,6 +30,10 @@ const phoneSchema = new mongoose.Schema({
       message: props => `${props.value} is not valid phone number`
     }
 
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 
 })
